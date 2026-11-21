@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#14243d">
+  <title>调色推杆</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%2314243d' width='32' height='32'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%23d9b770' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23d9b770'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="chapel" aria-hidden="true">
+    <svg class="lancet lancet-a" viewBox="0 0 140 320">
+      <path d="M16 300 V120 Q70 16 124 120 V300 Z" fill="#1a3358" stroke="#d9b770" stroke-width="4"/>
+      <path d="M32 286 V128 Q70 42 108 128 V286 Z" fill="#4b1831" stroke="#d3a35f" stroke-width="2"/>
+      <circle cx="70" cy="132" r="26" fill="#d3a35f" stroke="#f4dfaa" stroke-width="2"/>
+      <path d="M40 252 L70 170 L100 252 Z" fill="#9f6b7a" stroke="#d9b770" stroke-width="2"/>
+      <path d="M48 252 L70 190 L92 252 Z" fill="#162c53" stroke="#d9b770" stroke-width="1"/>
+    </svg>
+    <svg class="lancet lancet-b" viewBox="0 0 140 320">
+      <path d="M16 300 V120 Q70 16 124 120 V300 Z" fill="#253e68" stroke="#d9b770" stroke-width="4"/>
+      <path d="M32 286 V128 Q70 42 108 128 V286 Z" fill="#162c53" stroke="#d3a35f" stroke-width="2"/>
+      <circle cx="70" cy="132" r="26" fill="#9f6b7a" stroke="#f4dfaa" stroke-width="2"/>
+      <path d="M40 252 L70 170 L100 252 Z" fill="#3f6f92" stroke="#d9b770" stroke-width="2"/>
+      <path d="M48 252 L70 190 L92 252 Z" fill="#4b1831" stroke="#d9b770" stroke-width="1"/>
+    </svg>
+    <svg class="rose" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="97" fill="#162c53" stroke="#d9b770" stroke-width="4"/>
+      <circle cx="100" cy="100" r="84" fill="none" stroke="#f4dfaa" stroke-width="1.2"/>
+      <g fill="#9f6b7a" stroke="#d9b770" stroke-width="1.2">
+        <path id="petal" d="M100 18c10 18 13 36 0 56c-13-20-10-38 0-56z"/>
+        <use href="#petal" transform="rotate(45 100 100)"/>
+        <use href="#petal" transform="rotate(90 100 100)"/>
+        <use href="#petal" transform="rotate(135 100 100)"/>
+        <use href="#petal" transform="rotate(180 100 100)"/>
+        <use href="#petal" transform="rotate(225 100 100)"/>
+        <use href="#petal" transform="rotate(270 100 100)"/>
+        <use href="#petal" transform="rotate(315 100 100)"/>
+      </g>
+      <g fill="#3f6f92" stroke="#d9b770" stroke-width="1">
+        <path id="bud" d="M100 30c6 11 7 22 0 34c-7-12-6-23 0-34z"/>
+        <use href="#bud" transform="rotate(45 100 100)"/>
+        <use href="#bud" transform="rotate(90 100 100)"/>
+        <use href="#bud" transform="rotate(135 100 100)"/>
+        <use href="#bud" transform="rotate(180 100 100)"/>
+        <use href="#bud" transform="rotate(225 100 100)"/>
+        <use href="#bud" transform="rotate(270 100 100)"/>
+        <use href="#bud" transform="rotate(315 100 100)"/>
+      </g>
+      <circle cx="100" cy="100" r="46" fill="none" stroke="#d9b770" stroke-width="2"/>
+      <circle cx="100" cy="100" r="22" fill="#b5845e" stroke="#d9b770" stroke-width="2"/>
+      <circle cx="100" cy="100" r="10" fill="#f2d79c" stroke="#4b1831" stroke-width="1.5"/>
+    </svg>
+  </div>
+  <div class="gilt" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <div id="app">
+    <div class="corner-tools">
+      <button type="button" class="mute" id="mute-btn" aria-pressed="false">音效开</button>
+    </div>
+    <p id="live" class="sr-only" aria-live="polite"></p>
+
+    <section class="screen active" id="screen-start" data-screen="start">
+      <div class="hero">
+        <p class="eyebrow">本地小游戏</p>
+        <div class="mini" aria-hidden="true">
+          <span class="mini-fader" style="--v:.82;--channel:#ff4d4d"></span>
+          <span class="mini-fader" style="--v:.46;--channel:#1fbe6a"></span>
+          <span class="mini-fader" style="--v:.64;--channel:#3c7dff"></span>
+        </div>
+        <h1>调色推杆</h1>
+        <p class="lede">一局 5 轮。左边是题目颜色。拨动红、绿、蓝三根推杆，把右边调成同一个颜色，再锁定。越接近，分越高。</p>
+        <div class="diff-grid" role="radiogroup" aria-label="难度">
+          <button type="button" class="diff" role="radio" data-difficulty="casual" aria-checked="false">
+            <span class="diff-kicker">不限时</span>
+            <strong>休闲</strong>
+            <span>推杆显示数字，方便先把感觉找准。</span>
+          </button>
+          <button type="button" class="diff is-selected" role="radio" data-difficulty="normal" aria-checked="true">
+            <span class="diff-kicker">30 秒</span>
+            <strong>标准</strong>
+            <span>不显示数字，靠眼睛把颜色对上。</span>
+          </button>
+          <button type="button" class="diff" role="radio" data-difficulty="hard" aria-checked="false">
+            <span class="diff-kicker">15 秒</span>
+            <strong>挑战</strong>
+            <span>时间更短，灰浊色更多，更吃判断。</span>
+          </button>
+        </div>
+        <button type="button" class="primary big" id="start-btn">开始游戏</button>
+        <div class="best">
+          <span>最佳成绩</span>
+          <div id="best-list" class="best-list"></div>
+        </div>
+        <p class="footnote">分数按人眼色差计算。成绩只保存在这台电脑上。</p>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-play" data-screen="play">
+      <header class="topbar">
+        <button type="button" class="text-btn" id="exit-btn">退出</button>
+        <div class="top-center">
+          <div id="play-round">第 1 / 5 轮</div>
+          <div id="round-dots" class="dots"></div>
+        </div>
+        <div class="top-right">
+          <div id="play-total">累计 0</div>
+        </div>
+      </header>
+      <div class="timer" id="timer-wrap">
+        <div class="timer-track"><div id="timer-bar"></div></div>
+        <span id="timer-text">30</span>
+      </div>
+      <div class="stage">
+        <div class="swatch-col">
+          <div class="swatch-label">题目颜色</div>
+          <div class="swatch" id="target-swatch"></div>
+          <div class="swatch-meta" id="target-meta">锁定后公布</div>
+        </div>
+        <div class="versus">
+          <div id="vs-kicker">调到一样</div>
+          <div id="score-block" class="score-block">
+            <div id="score-num" class="score-num">0</div>
+            <div id="score-caption" class="score-caption"></div>
+            <div id="score-delta" class="score-delta"></div>
+          </div>
+        </div>
+        <div class="swatch-col">
+          <div class="swatch-label">你的颜色</div>
+          <div class="swatch" id="your-swatch"></div>
+          <div class="swatch-meta" id="your-meta">凭眼睛判断</div>
+        </div>
+      </div>
+      <div class="console">
+        <div class="engraved">R · G · B</div>
+        <div class="faders" id="faders">
+          <div class="fader" data-index="0">
+            <div class="track" role="slider" tabindex="0" aria-orientation="vertical" aria-label="红色推杆" aria-valuemin="0" aria-valuemax="255" aria-valuenow="0">
+              <div class="ticks"></div>
+              <div class="slot"><div class="fill"></div></div>
+              <div class="knob"></div>
+            </div>
+            <div class="fader-name">红 <small>R</small></div>
+            <div class="fader-value">–</div>
+          </div>
+          <div class="fader" data-index="1">
+            <div class="track" role="slider" tabindex="0" aria-orientation="vertical" aria-label="绿色推杆" aria-valuemin="0" aria-valuemax="255" aria-valuenow="0">
+              <div class="ticks"></div>
+              <div class="slot"><div class="fill"></div></div>
+              <div class="knob"></div>
+            </div>
+            <div class="fader-name">绿 <small>G</small></div>
+            <div class="fader-value">–</div>
+          </div>
+          <div class="fader" data-index="2">
+            <div class="track" role="slider" tabindex="0" aria-orientation="vertical" aria-label="蓝色推杆" aria-valuemin="0" aria-valuemax="255" aria-valuenow="0">
+              <div class="ticks"></div>
+              <div class="slot"><div class="fill"></div></div>
+              <div class="knob"></div>
+            </div>
+            <div class="fader-name">蓝 <small>B</small></div>
+            <div class="fader-value">–</div>
+          </div>
+        </div>
+        <p id="diff-line" class="hint"></p>
+        <button type="button" class="primary" id="action-btn">锁定答案</button>
+        <p id="keyhint" class="keyhint"></p>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-final" data-screen="final">
+      <div class="hero">
+        <p class="eyebrow" id="final-mode">标准</p>
+        <h2 id="final-rank" class="rank">色彩达人</h2>
+        <div class="final-score-row">
+          <span id="final-score" class="final-score">0</span>
+          <span id="final-max" class="final-max">/ 500</span>
+        </div>
+        <p id="final-record" class="record">新纪录</p>
+        <p id="final-note" class="lede"></p>
+        <p class="round-heading">每一轮</p>
+        <ol id="final-list" class="breakdown"></ol>
+        <p id="final-time" class="time"></p>
+        <p id="final-best" class="time"></p>
+        <div class="final-actions">
+          <button type="button" class="primary" id="again-btn">再来一局</button>
+          <button type="button" class="ghost" id="home-btn">回首页</button>
+          <button type="button" class="ghost" id="copy-btn">复制成绩</button>
+        </div>
+        <p id="copy-status" class="status"></p>
+      </div>
+    </section>
+  </div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <noscript><p class="noscript">需要启用 JavaScript 才能玩。</p></noscript>
+  <script src="color.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
